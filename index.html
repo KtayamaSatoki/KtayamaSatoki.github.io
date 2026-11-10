@@ -781,10 +781,6 @@
                 <option value="random100">100問</option>
               </select>
             </label>
-            <label id="study-field-container">
-              分野
-              <select id="study-field"></select>
-            </label>
             <button id="study-start-btn" type="button" class="primary" disabled>学習を開始する</button>
           </div>
           <p id="study-available-info" class="muted"></p>
@@ -862,12 +858,18 @@
             <label>
               分野の指定方法
               <select id="prompt-field-mode">
-                <option value="existing" selected>登録済みの分野から選ぶ</option>
-                <option value="new">新しい分野名・IDを入力</option>
+                <option value="template" selected>標準テンプレートから選ぶ (推奨)</option>
+                <option value="existing">登録済みの分野から選ぶ</option>
+                <option value="new">新しい分野名・IDを直接入力</option>
               </select>
             </label>
 
-            <label id="prompt-field-select-container">
+            <label id="prompt-field-template-container">
+              分野テンプレート
+              <select id="prompt-field-template"></select>
+            </label>
+
+            <label id="prompt-field-select-container" style="display: none;">
               登録済み分野
               <select id="prompt-field-select"></select>
             </label>
@@ -1183,6 +1185,47 @@
       ["machine", "機械"],
       ["regulation", "法規"]
     ]);
+
+    const FIELD_TEMPLATES = {
+      theory: [
+        { id: "theory-electrostatics", name: "静電気", scope: "クーロンの法則、電界と電位、ガウスの定理、静電容量、コンデンサ接続、静電エネルギー" },
+        { id: "theory-magnetism", name: "磁気", scope: "磁界と磁束密度、ビオ・サバールの法則、アンペールの法則、電磁誘導、インダクタンス、磁気回路" },
+        { id: "theory-dc-circuits", name: "直流回路", scope: "オームの法則、キルヒホッフの法則、合成抵抗、分圧・分流、ブリッジ回路、テブナンの定理、重ね合わせの理、電力・電力量" },
+        { id: "theory-ac-circuits", name: "交流回路", scope: "正弦波交流、インピーダンス、複素数表示、RLC直並列回路、共振回路、有効・無効電力・力率、三相交流回路（対称三相交流、Y-Δ結線）" },
+        { id: "theory-transients", name: "過渡現象", scope: "RL直列回路・RC直列回路の過渡応答、時定数、スイッチ開閉直後・定常状態の電圧・電流計算" },
+        { id: "theory-electronics", name: "電子理論・電子回路", scope: "真空中の電子運動、半導体理論（pn接合ダイオード、バイポーラトランジスタ、FET）、オペアンプ（理想演算増幅器回路）" },
+        { id: "theory-measurements", name: "電気計測", scope: "指示電気計器の動作原理（可動コイル形、可動鉄片形等）、倍率器・分流器、計器用変成器、電力測定（二電力計法）、測定誤差" }
+      ],
+      power: [
+        { id: "power-hydro", name: "水力発電", scope: "ベルヌーイの定理、理論水力・水車出力・発電機出力、水車の種類・特性、比速度、キャビテーション、調速機、揚水発電所" },
+        { id: "power-thermal", name: "火力発電", scope: "ランキンサイクル、汽力発電用ボイラ・蒸気タービン、熱効率・燃料消費量計算、コンバインドサイクル発電、環境保全対策" },
+        { id: "power-nuclear-renewables", name: "原子力・新エネルギー発電", scope: "核分裂反応、軽水炉（BWR・PWR）、太陽光発電・風力発電の特性、燃料電池、蓄電池連系システム" },
+        { id: "power-substation", name: "変電所", scope: "主変圧器結線・保護、ガス絶縁開閉装置(GIS)、遮断器・断路器、調相設備（電力用コンデンサ、分路リアクトル）、中性点接地方式" },
+        { id: "power-transmission", name: "送電線路", scope: "架空送電線路のたるみ・風圧荷重、送電特性・電圧降下計算、短絡容量・地絡故障計算、安定度向上対策、フェランチ効果とコロナ放電" },
+        { id: "power-underground", name: "地中送電", scope: "電力ケーブル（CVケーブル等）、ケーブルの充電容量・誘電損・シース損、地中電線路の敷設方式、事故点測定法（マーレーループ法）" },
+        { id: "power-distribution", name: "配電線路", scope: "配電系統構成（単相3線式・三相3線式）、配電線路の電圧降下・電力損失計算、柱上変圧器、バランサ、力率改善計算" },
+        { id: "power-materials", name: "電気材料", scope: "導電材料・抵抗材料、各種絶縁材料・絶縁破壊特性、磁性材料のヒステリシス損・渦電流損" }
+      ],
+      machine: [
+        { id: "machine-dc", name: "直流機", scope: "直流発電機・電動機の構造と動作原理、誘導起電力・トルク計算、電機子反作用、速度制御・始動法、特性曲線" },
+        { id: "machine-induction", name: "誘導機", scope: "三相誘導電動機の回転磁界と動作原理、すべりの計算、等価回路、トルク特性・比例推移、始動法・速度制御法" },
+        { id: "machine-synchronous", name: "同期機", scope: "同期発電機・電動機の構造・誘導起電力、電機子反作用、短絡比と同期インピーダンス、同期電動機のV曲線（位相特性）" },
+        { id: "machine-transformer", name: "変圧器", scope: "変圧器の構造と動作原理、等価回路、電圧変動率の計算、損失（鉄損・銅損）と効率計算・全日効率、並行運転条件、三相結線" },
+        { id: "machine-powerelec", name: "パワーエレクトロニクス", scope: "パワー半導体素子（ダイオード、サイリスタ、IGBT、MOSFET）、整流回路・転流現象、DC-DCチョッパ、インバータ（PWM制御）" },
+        { id: "machine-motor-applications", name: "電動機応用・自動制御", scope: "電動機の所要出力計算、負荷特性と所要動力、古典制御理論（ブロック線図、伝達関数、インパルス/ステップ応答、ボード線図）" },
+        { id: "machine-information", name: "情報伝達・処理", scope: "基数変換、論理演算と論理回路、ブール代数の公式、カルノー図による論理式簡単化、コンピュータ基本構成" },
+        { id: "machine-lighting", name: "照明", scope: "光度・光束・照度・輝度の定義と単位、点光源・面光源の照度計算（水平面・垂直面照度）、各種光源の特徴と発光効率" },
+        { id: "machine-heating", name: "電熱", scope: "電熱計算（熱量、比熱、所要電力、熱効率）、加熱方式（抵抗加熱、誘導加熱、誘電加熱、アーク加熱）、ヒートポンプ" },
+        { id: "machine-electrochem", name: "電気化学", scope: "ファラデーの電気分解の法則、電池の起電力・電極反応、二次電池（鉛蓄電池、リチウムイオン二次電池）、電気めっき" }
+      ],
+      regulation: [
+        { id: "regulation-business-law", name: "電気事業法及び関係法令", scope: "電気工作物の定義と分類（一般用・自家用・事業用）、主任技術者の選任義務・保安規程、自主保安体制、使用前自主検査、報告義務" },
+        { id: "regulation-standards-general", name: "技術基準（総則・発変電施設）", scope: "用語の定義、電路の絶縁性能・絶縁耐力試験、接地工事の区分と接地抵抗値、機械器具の危険防止措置" },
+        { id: "regulation-standards-lines", name: "技術基準（電線路・施設基準）", scope: "架空電線路の支持物・保安工事、電線の離隔距離（建造物・道路等）、地中電線路の施設、過電流・地絡遮断器の施設基準" },
+        { id: "regulation-standards-lowvoltage", name: "技術基準（低圧屋内配線・需要場所）", scope: "低圧屋内配線工事（金属管、可とう電線管、ケーブル工事等）、過電流遮断器・漏電遮断器の施設、特殊場所（粉じん・危険物）の工事" },
+        { id: "regulation-management", name: "電気施設管理", scope: "需要率・不等率・負荷率の計算、力率改善による設備容量余裕・損失軽減計算、変圧器の適正容量決定、周波数変動・事故対策" }
+      ]
+    };
 
     const REVIEWS = new Map([
       ["unreviewed", "未確認"],
@@ -1841,7 +1884,7 @@
     // 1. 学習・採点・リザルトロジック
     // ==========================================
 
-    function getEligibleCandidates(subjectId, format, mode, fieldId) {
+    function getEligibleCandidates(subjectId, format) {
       return snapshot.questions.filter(question => {
         if (question.subjectId !== subjectId) return false;
         if (question.reviewStatus !== "reviewed" || !question.enabled) return false;
@@ -1850,7 +1893,6 @@
           if (!Array.isArray(question.choices) || question.choices.length !== 5) return false;
           if (!question.choices.every(c => c.trueFalse !== null)) return false;
         }
-        if (mode === "random10" && question.fieldId !== fieldId) return false;
         return true;
       });
     }
@@ -1859,12 +1901,8 @@
       const subjectId = $("study-subject").value;
       const format = $("study-format").value;
       const mode = $("study-mode").value;
-      const fieldId = $("study-field").value;
 
-      const fieldContainer = $("study-field-container");
-      fieldContainer.style.display = mode === "random10" ? "inline-flex" : "none";
-
-      const candidates = getEligibleCandidates(subjectId, format, mode, fieldId);
+      const candidates = getEligibleCandidates(subjectId, format);
       const required = mode === "random10" ? 10 : 100;
       const eligible = candidates.length >= required;
 
@@ -1885,32 +1923,6 @@
       }
     }
 
-    function refillStudyFields() {
-      const select = $("study-field");
-      const previous = select.value;
-      const subjectId = $("study-subject").value;
-
-      select.replaceChildren();
-
-      const fields = snapshot.fields
-        .filter(field => field.subjectId === subjectId)
-        .sort((a, b) => a.name.localeCompare(b.name, "ja"));
-
-      fields.forEach(field => {
-        const option = element("option", field.name);
-        option.value = field.id;
-        select.append(option);
-      });
-
-      const stillExists = [...select.options].some(o => o.value === previous);
-      if (stillExists) {
-        select.value = previous;
-      } else if (select.options.length > 0) {
-        select.selectedIndex = 0;
-      }
-      updateStudyAvailability();
-    }
-
     function shuffle(array) {
       const result = [...array];
       for (let i = result.length - 1; i > 0; i--) {
@@ -1926,9 +1938,8 @@
       const subjectId = forcedConditions ? forcedConditions.subjectId : $("study-subject").value;
       const format = forcedConditions ? forcedConditions.format : $("study-format").value;
       const mode = forcedConditions ? forcedConditions.mode : $("study-mode").value;
-      const fieldId = forcedConditions ? forcedConditions.fieldId : $("study-field").value;
 
-      const candidates = getEligibleCandidates(subjectId, format, mode, fieldId);
+      const candidates = getEligibleCandidates(subjectId, format);
       const required = mode === "random10" ? 10 : 100;
       requireCondition(candidates.length >= required, "出題可能数", "出題可能な元問題が不足しています");
 
@@ -1946,16 +1957,13 @@
         ? clonedQuestions.map(q => q.choices[Math.floor(Math.random() * 5)].id)
         : [];
 
-      const fieldObj = snapshot.fields.find(f => f.id === fieldId);
-      const targetName = mode === "random10"
-        ? (fieldObj ? fieldObj.name : fieldId)
-        : (SUBJECTS.get(subjectId) + " 全体");
+      const targetName = SUBJECTS.get(subjectId) + " 全体";
 
       const session = {
         id: "session-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8),
         revision: 1,
         createdAt: new Date().toISOString(),
-        conditions: { subjectId, format, mode, fieldId: mode === "random10" ? fieldId : null },
+        conditions: { subjectId, format, mode, fieldId: null },
         subjectName: SUBJECTS.get(subjectId),
         targetName,
         questions: clonedQuestions,
@@ -2703,6 +2711,43 @@
     // 3. 作問プロンプト生成ロジック (新規)
     // ==========================================
 
+    function refillPromptTemplates() {
+      const subjectId = $("prompt-subject").value;
+      const select = $("prompt-field-template");
+      const previous = select.value;
+      select.replaceChildren();
+
+      const templates = FIELD_TEMPLATES[subjectId] || [];
+      templates.forEach(t => {
+        const option = element("option", t.name + " (" + t.id + ")");
+        option.value = t.id;
+        select.append(option);
+      });
+
+      if (templates.length > 0) {
+        const stillExists = [...select.options].some(o => o.value === previous);
+        select.value = stillExists ? previous : templates[0].id;
+      }
+      onPromptTemplateChange();
+    }
+
+    function onPromptTemplateChange() {
+      const subjectId = $("prompt-subject").value;
+      const select = $("prompt-field-template");
+      const templateId = select.value;
+      const templates = FIELD_TEMPLATES[subjectId] || [];
+      const tmpl = templates.find(t => t.id === templateId);
+
+      if (tmpl) {
+        const scopeInput = $("prompt-scope");
+        if (!scopeInput.value || scopeInput.dataset.auto === "true") {
+          scopeInput.value = tmpl.scope;
+          scopeInput.dataset.auto = "true";
+        }
+      }
+      updatePromptPrefixCandidate();
+    }
+
     function refillPromptFields() {
       const subjectId = $("prompt-subject").value;
       const select = $("prompt-field-select");
@@ -2731,13 +2776,21 @@
 
     function updatePromptFieldVisibility() {
       const mode = $("prompt-field-mode").value;
+      const templateContainer = $("prompt-field-template-container");
       const selectContainer = $("prompt-field-select-container");
       const newContainer = $("prompt-new-field-container");
 
-      if (mode === "existing") {
+      if (mode === "template") {
+        templateContainer.style.display = "inline-flex";
+        selectContainer.style.display = "none";
+        newContainer.style.display = "none";
+        onPromptTemplateChange();
+      } else if (mode === "existing") {
+        templateContainer.style.display = "none";
         selectContainer.style.display = "inline-flex";
         newContainer.style.display = "none";
       } else {
+        templateContainer.style.display = "none";
         selectContainer.style.display = "none";
         newContainer.style.display = "flex";
       }
@@ -2748,7 +2801,9 @@
       const mode = $("prompt-field-mode").value;
       let fieldId = "";
 
-      if (mode === "existing") {
+      if (mode === "template") {
+        fieldId = $("prompt-field-template").value || $("prompt-subject").value + "-tmpl01";
+      } else if (mode === "existing") {
         fieldId = $("prompt-field-select").value || $("prompt-subject").value + "-field01";
       } else {
         fieldId = $("prompt-new-field-id").value.trim() || $("prompt-subject").value + "-new";
@@ -2769,7 +2824,14 @@
       let fieldId = "";
       let fieldName = "";
 
-      if (fieldMode === "existing") {
+      if (fieldMode === "template") {
+        const templateId = $("prompt-field-template").value;
+        const templates = FIELD_TEMPLATES[subjectId] || [];
+        const tmpl = templates.find(t => t.id === templateId);
+        requireCondition(tmpl !== undefined, "分野テンプレート", "標準分野テンプレートを選択してください");
+        fieldId = tmpl.id;
+        fieldName = tmpl.name;
+      } else if (fieldMode === "existing") {
         fieldId = $("prompt-field-select").value;
         const fieldObj = snapshot.fields.find(f => f.id === fieldId);
         fieldName = fieldObj ? fieldObj.name : fieldId;
@@ -4169,7 +4231,8 @@ Markdownのコード枠、前置き、あとがき、検査報告は付けない
       snapshot = await readCatalog();
       refillFields();
       renderQuestions();
-      refillStudyFields();
+      updateStudyAvailability();
+      refillPromptTemplates();
       refillPromptFields();
       refillDeleteFields();
       await updateAnalysis();
@@ -4214,12 +4277,9 @@ Markdownのコード枠、前置き、あとがき、検査報告は付けない
       });
 
       // 1. 学習セクションイベント
-      $("study-subject").addEventListener("change", () => {
-        refillStudyFields();
-      });
+      $("study-subject").addEventListener("change", updateStudyAvailability);
       $("study-format").addEventListener("change", updateStudyAvailability);
       $("study-mode").addEventListener("change", updateStudyAvailability);
-      $("study-field").addEventListener("change", updateStudyAvailability);
 
       $("study-start-btn").addEventListener("click", () => {
         perform(() => startStudy());
@@ -4235,11 +4295,16 @@ Markdownのコード枠、前置き、あとがき、検査報告は付けない
 
       // 3. 作問プロンプト作成イベント (新規)
       $("prompt-subject").addEventListener("change", () => {
+        refillPromptTemplates();
         refillPromptFields();
       });
       $("prompt-field-mode").addEventListener("change", updatePromptFieldVisibility);
+      $("prompt-field-template").addEventListener("change", onPromptTemplateChange);
       $("prompt-field-select").addEventListener("change", updatePromptPrefixCandidate);
       $("prompt-new-field-id").addEventListener("input", updatePromptPrefixCandidate);
+      $("prompt-scope").addEventListener("input", () => {
+        $("prompt-scope").dataset.auto = "false";
+      });
       $("prompt-prefix").addEventListener("input", () => {
         $("prompt-prefix").dataset.auto = "false";
       });
@@ -4389,12 +4454,6 @@ Markdownのコード枠、前置き、あとがき、検査報告は付けない
 
         await refreshAll();
 
-        if (lastSettings && lastSettings.value && lastSettings.value.fieldId) {
-          const fieldSel = $("study-field");
-          if ([...fieldSel.options].some(o => o.value === lastSettings.value.fieldId)) {
-            fieldSel.value = lastSettings.value.fieldId;
-          }
-        }
         updateStudyAvailability();
         renderStudyArea();
 
