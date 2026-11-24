@@ -618,9 +618,284 @@
     .page[hidden] {
       display: none !important;
     }
+
+    /* ========================================================
+       モバイル・スマートフォン対応 (レスポンシブデザイン)
+       ======================================================== */
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    img, svg, canvas, video, iframe, pre, table, textarea, input, select {
+      max-width: 100%;
+    }
+
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
+
+    /* タブレット・スマートフォン全般 (<= 768px) */
+    @media (max-width: 768px) {
+      /* ヘッダーのレイアウト最適化: 1行目にタイトル+テーマ、2行目に横スクロールメニュー */
+      .header-inner {
+        padding: 8px 12px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+          "title theme"
+          "nav nav";
+        gap: 6px 10px;
+      }
+
+      .app-title-link {
+        grid-area: title;
+        font-size: 1.05rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .header-right {
+        display: contents;
+      }
+
+      .theme-toggle-btn {
+        grid-area: theme;
+        padding: 4px 10px;
+        font-size: 0.8rem;
+        justify-self: end;
+        border-radius: 16px;
+      }
+
+      nav.app-nav {
+        grid-area: nav;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        gap: 6px;
+        padding: 4px 2px 6px 2px;
+        width: 100%;
+      }
+
+      nav.app-nav::-webkit-scrollbar {
+        display: none;
+      }
+
+      nav.app-nav a {
+        flex-shrink: 0;
+        font-size: 0.85rem;
+        padding: 6px 11px;
+        white-space: nowrap;
+        border-radius: 20px;
+        background: var(--btn-bg);
+        border: 1px solid var(--border-color);
+      }
+
+      nav.app-nav a.active {
+        background: var(--nav-link-active-bg);
+        color: var(--nav-link-active-text);
+        border-color: var(--nav-link-active-bg);
+      }
+
+      /* メイン領域・カードの余白調整 */
+      main {
+        padding: 12px 10px;
+      }
+
+      section, article, .content-box {
+        padding: 14px 12px;
+        margin-bottom: 14px;
+        border-radius: 10px;
+      }
+
+      ol, ul {
+        padding-left: 24px;
+        margin: 8px 0;
+      }
+
+      .page-header {
+        margin-bottom: 12px;
+        gap: 8px;
+      }
+
+      .page-title {
+        font-size: 1.15rem;
+      }
+
+      .back-home-link {
+        font-size: 0.82rem;
+        padding: 4px 8px;
+      }
+
+      h2 {
+        font-size: 1.15rem;
+        padding-bottom: 4px;
+      }
+
+      h3 {
+        font-size: 1rem;
+        margin: 10px 0 4px 0;
+      }
+
+      .notice {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+      }
+
+      /* iOSでズームインしないよう入力欄の最小フォントサイズを16pxに */
+      input[type="text"],
+      input[type="search"],
+      input[type="number"],
+      input[type="date"],
+      input[type="file"],
+      select,
+      textarea {
+        font-size: 16px;
+      }
+
+      /* 再開バナー */
+      .resume-banner {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 14px;
+        gap: 10px;
+      }
+
+      .resume-banner a.resume-btn {
+        text-align: center;
+        display: block;
+      }
+
+      /* ホームの機能メニューグリッド */
+      .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .menu-card {
+        padding: 14px;
+      }
+
+      .menu-card a.card-btn {
+        display: block;
+        width: 100%;
+      }
+
+      /* クイズ選択肢カードのタップ性向上 */
+      .choice-card {
+        padding: 12px 14px;
+        margin-bottom: 8px;
+        min-height: 48px;
+        border-radius: 8px;
+      }
+
+      .choice-card:active {
+        opacity: 0.85;
+      }
+
+      .choice-card input[type="radio"] {
+        width: 18px;
+        height: 18px;
+        min-width: 18px;
+        margin-top: 2px;
+      }
+
+      /* テーブルの水平スクロールと視認性 */
+      table {
+        min-width: 480px;
+        font-size: 0.85rem;
+      }
+
+      th, td {
+        padding: 8px 6px;
+      }
+
+      /* 学習画面・ヘッダー controls */
+      .study-header-controls {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px;
+      }
+
+      .study-header-controls button {
+        width: 100%;
+      }
+    }
+
+    /* スマートフォン幅 (<= 640px) 向けの詳細調整 */
+    @media (max-width: 640px) {
+      .controls {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .controls label {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+        width: 100%;
+      }
+
+      /* チェックボックス・ラジオボタンを含むラベルは横並びを維持 */
+      .controls label:has(input[type="checkbox"]),
+      .controls label:has(input[type="radio"]) {
+        flex-direction: row;
+        align-items: center;
+        width: auto;
+      }
+
+      .controls select,
+      .controls input[type="text"],
+      .controls input[type="search"],
+      .controls input[type="number"],
+      .controls input[type="file"],
+      .controls button {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      /* 特殊ボタンは100%幅にしない */
+      .header-right button,
+      .page-header a,
+      .theme-toggle-btn {
+        width: auto !important;
+      }
+
+      /* プロンプト生成ページのコピー用ヘッダー */
+      .prompt-output-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px;
+      }
+
+      .prompt-output-header button {
+        width: 100% !important;
+      }
+    }
+
+    /* 超小型端末 (<= 360px) */
+    @media (max-width: 360px) {
+      .app-title-link {
+        font-size: 0.95rem;
+      }
+
+      .theme-toggle-btn {
+        padding: 3px 8px;
+        font-size: 0.75rem;
+      }
+    }
   </style>
-  <!-- Google Identity Services (Google Drive OAuth連携用) -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
   <!-- 共通ヘッダー & ナビゲーション -->
@@ -723,11 +998,11 @@
             <a href="#manage" class="card-btn">問題管理へ</a>
           </div>
 
-          <!-- バックアップ・復元 & Google Drive -->
+          <!-- バックアップ・復元 & Google Drive共有リンク -->
           <div class="menu-card">
             <div>
-              <h3>全データ保管・復元 / Google Drive</h3>
-              <p>全領域のバックアップJSON出力・全置換復元に加え、Google Driveへのデータ直接保管（アップロード）および保存データ呼び出しに対応します。</p>
+              <h3>全データ保管・復元</h3>
+              <p>全領域のバックアップJSON出力・全置換復元、およびGoogle Drive共有リンクからのバックアップデータ直接読み込みに対応します。</p>
             </div>
             <a href="#backup" class="card-btn">保管・復元へ</a>
           </div>
@@ -795,7 +1070,7 @@
         <!-- 過去リザルト履歴 -->
         <details id="study-history" style="margin-top: 24px;">
           <summary>過去の完了リザルト履歴一覧</summary>
-          <div id="study-history-list" class="stack" style="margin-top: 10px;"></div>
+          <div id="study-history-list" class="table-responsive" style="margin-top: 10px;"></div>
         </details>
       </section>
     </div>
@@ -824,7 +1099,7 @@
           <button id="analysis-refresh-btn" type="button">分析を更新</button>
         </div>
         <p id="analysis-summary" class="muted"></p>
-        <div id="analysis-table-container" style="overflow-x: auto;"></div>
+        <div id="analysis-table-container" class="table-responsive"></div>
       </section>
     </div>
 
@@ -878,18 +1153,18 @@
           <div id="prompt-new-field-container" class="controls" style="display: none;">
             <label>
               新規 分野名
-              <input id="prompt-new-field-name" type="text" placeholder="例：水力発電" style="width: 160px;">
+              <input id="prompt-new-field-name" type="text" placeholder="例：水力発電" style="width: 100%; max-width: 160px;">
             </label>
             <label>
               新規 分野ID
-              <input id="prompt-new-field-id" type="text" placeholder="例：power-hydro" style="width: 160px;">
+              <input id="prompt-new-field-id" type="text" placeholder="例：power-hydro" style="width: 100%; max-width: 160px;">
             </label>
           </div>
 
           <div class="controls">
             <label>
               問題数
-              <input id="prompt-count" type="number" value="10" min="1" max="50" style="width: 80px;">
+              <input id="prompt-count" type="number" value="10" min="1" max="50" style="width: 100%; max-width: 80px;">
             </label>
 
             <label>
@@ -922,33 +1197,33 @@
           <div class="controls">
             <label>
               出題範囲・具体的テーマ
-              <input id="prompt-scope" type="text" placeholder="例：水力発電の理論出力、水車の特徴、キャビテーション、調速機" style="width: 440px;">
+              <input id="prompt-scope" type="text" placeholder="例：水力発電の理論出力、水車の特徴、キャビテーション、調速機" style="width: 100%; max-width: 440px;">
             </label>
           </div>
 
           <div class="controls">
             <label>
               除外する内容
-              <input id="prompt-exclude" type="text" value="なし" style="width: 240px;">
+              <input id="prompt-exclude" type="text" value="なし" style="width: 100%; max-width: 240px;">
             </label>
             <label>
               問題ID接頭辞
-              <input id="prompt-prefix" type="text" placeholder="例：power-hydro-set001" style="width: 200px;">
+              <input id="prompt-prefix" type="text" placeholder="例：power-hydro-set001" style="width: 100%; max-width: 200px;">
             </label>
             <label>
               開始番号
-              <input id="prompt-start-num" type="number" value="1" min="1" style="width: 70px;">
+              <input id="prompt-start-num" type="number" value="1" min="1" style="width: 100%; max-width: 70px;">
             </label>
           </div>
 
           <div class="controls">
             <label>
               法令等の基準日
-              <input id="prompt-legal-date" type="text" placeholder="YYYY-MM-DD または「なし」" value="なし" style="width: 200px;">
+              <input id="prompt-legal-date" type="text" placeholder="YYYY-MM-DD または「なし」" value="なし" style="width: 100%; max-width: 200px;">
             </label>
             <label>
               参照資料
-              <input id="prompt-references" type="text" value="指定なし" style="width: 240px;">
+              <input id="prompt-references" type="text" value="指定なし" style="width: 100%; max-width: 240px;">
             </label>
           </div>
 
@@ -964,7 +1239,7 @@
           </div>
 
           <div style="margin-top: 10px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <div class="prompt-output-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
               <h3 style="margin: 0;">生成されたプロンプト</h3>
               <button id="prompt-copy-btn" type="button" class="primary" style="display: none;">📋 プロンプトをコピー</button>
             </div>
@@ -1077,51 +1352,17 @@
         <a href="#home" class="back-home-link">← ホームに戻る</a>
       </div>
 
-      <!-- Google Drive 連携セクション -->
+      <!-- Google Drive 共有リンク読み出しセクション -->
       <section aria-labelledby="gdrive-heading">
-        <h2 id="gdrive-heading">Google Drive 保管・呼び出し</h2>
+        <h2 id="gdrive-heading">Google Drive 共有リンクから復元</h2>
         <p class="muted">
-          Google Driveに電験学習データを直接保存・読み出しができます。<br>
-          ※Google Cloud Consoleで作成した「OAuth 2.0 クライアント ID」を設定することで、安全にGoogleアカウントのDriveと連携します。
+          Google Drive にアップロードしたバックアップJSONファイルの「共有リンク」または「ファイルID」から、データを直接読み込んで復元検査を行います。<br>
+          ※Google Drive側でファイルのアクセス権を「リンクを知っている全員が閲覧可能」に設定してください。
         </p>
 
-        <details id="gdrive-config-details">
-          <summary>Google Drive 接続設定（Client ID）</summary>
-          <div class="stack" style="margin-top: 10px;">
-            <p class="muted">
-              Google Cloud ConsoleでOAuth同意画面（スコープ: <code>https://www.googleapis.com/auth/drive.file</code>）を設定し、Webアプリケーション用クライアントIDを取得して入力してください。
-            </p>
-            <div class="controls">
-              <label>
-                OAuth Client ID
-                <input id="gdrive-client-id" type="text" placeholder="例：xxxxxxxxxxxx.apps.googleusercontent.com" style="width: 380px;">
-              </label>
-              <button id="gdrive-save-config-btn" type="button">設定を保存</button>
-            </div>
-          </div>
-        </details>
-
-        <div class="controls" style="margin-top: 16px;">
-          <button id="gdrive-auth-btn" type="button">🔑 Google Drive に接続 / ログイン</button>
-          <span id="gdrive-status" class="muted">未接続</span>
-        </div>
-
-        <div id="gdrive-actions-area" class="stack" style="margin-top: 14px;">
-          <div class="controls">
-            <button id="gdrive-save-btn" type="button" class="primary" disabled>☁️ 現在の全データを Google Drive に保管</button>
-            <button id="gdrive-list-btn" type="button" disabled>📂 Google Drive からバックアップ一覧を取得</button>
-          </div>
-
-          <div id="gdrive-files-container" style="overflow-x: auto;"></div>
-
-          <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 12px 0;">
-
-          <h3>共有リンク・URLから直接呼び出す</h3>
-          <p class="muted">Google Driveの公開ファイルや共有リンクからバックアップデータを直接読み込んで復元検査を行います。</p>
-          <div class="controls">
-            <input id="gdrive-url-input" type="text" placeholder="https://drive.google.com/file/d/xxxxx/view... またはファイルID" style="width: 440px;">
-            <button id="gdrive-url-load-btn" type="button">URLから読み込んで検査</button>
-          </div>
+        <div class="controls">
+          <input id="gdrive-url-input" type="text" placeholder="https://drive.google.com/file/d/xxxxx/view... またはファイルID" style="width: 100%; max-width: 440px;">
+          <button id="gdrive-url-load-btn" type="button">共有リンクから読み込んで検査</button>
         </div>
       </section>
 
@@ -1249,10 +1490,6 @@
     let lastExportedFingerprint = null;
     let backupInspectPlan = null;
     let catalogChannel = null;
-
-    // Google Drive 連携用状態
-    let gdriveTokenClient = null;
-    let gdriveAccessToken = null;
 
     // ==========================================
     // ダークモード管理
@@ -1382,6 +1619,9 @@
         if (navLink) {
           if (p === pageId) {
             navLink.classList.add("active");
+            try {
+              navLink.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+            } catch {}
           } else {
             navLink.classList.remove("active");
           }
@@ -2017,7 +2257,7 @@
       const existingAnswer = s.answers.find(a => a.questionIndex === s.currentIndex);
       const isAnswered = existingAnswer !== undefined;
 
-      const header = element("div", undefined, "controls");
+      const header = element("div", undefined, "controls study-header-controls");
       header.style.justifyContent = "space-between";
       header.append(
         element(
@@ -2399,7 +2639,7 @@
 
       const card = element("div", undefined, "stack");
 
-      const header = element("div", undefined, "controls");
+      const header = element("div", undefined, "controls study-header-controls");
       header.style.justifyContent = "space-between";
       header.append(
         element("h3", "学習リザルト - " + result.subjectName + "／" + result.targetName)
@@ -3049,232 +3289,8 @@ Markdownのコード枠、前置き、あとがき、検査報告は付けない
     }
 
     // ==========================================
-    // 4. Google Drive 連携ロジック (新規)
+    // 4. Google Drive 共有リンク読み出しロジック
     // ==========================================
-
-    function initGDriveSettings() {
-      const savedId = localStorage.getItem("denken-gdrive-client-id") || "";
-      $("gdrive-client-id").value = savedId;
-      updateGDriveStatus();
-    }
-
-    function saveGDriveSettings() {
-      const clientId = $("gdrive-client-id").value.trim();
-      localStorage.setItem("denken-gdrive-client-id", clientId);
-      message("Google Drive Client IDを保存しました。");
-      updateGDriveStatus();
-    }
-
-    function updateGDriveStatus() {
-      const statusEl = $("gdrive-status");
-      const clientId = localStorage.getItem("denken-gdrive-client-id") || "";
-      const saveBtn = $("gdrive-save-btn");
-      const listBtn = $("gdrive-list-btn");
-
-      if (gdriveAccessToken) {
-        statusEl.textContent = "✅ Google Drive に接続済み";
-        statusEl.style.color = "#166534";
-        saveBtn.disabled = false;
-        listBtn.disabled = false;
-      } else if (clientId) {
-        statusEl.textContent = "Client ID 設定済み（未認証）";
-        statusEl.style.color = "#854d0e";
-        saveBtn.disabled = true;
-        listBtn.disabled = true;
-      } else {
-        statusEl.textContent = "Client ID 未設定（設定を開いて入力してください）";
-        statusEl.style.color = "#64748b";
-        saveBtn.disabled = true;
-        listBtn.disabled = true;
-      }
-    }
-
-    function connectGoogleDrive() {
-      const clientId = localStorage.getItem("denken-gdrive-client-id") || $("gdrive-client-id").value.trim();
-      requireCondition(clientId !== "", "Google Drive", "まず「Google Drive 接続設定」に OAuth Client ID を入力して保存してください");
-
-      requireCondition(
-        window.google && window.google.accounts && window.google.accounts.oauth2,
-        "Google Identity Services",
-        "Google認証ライブラリを読み込み中です。インターネット接続を確認して少し待ってから再度お試しください"
-      );
-
-      gdriveTokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: clientId,
-        scope: "https://www.googleapis.com/auth/drive.file",
-        callback: (response) => {
-          if (response.error !== undefined) {
-            message("Google認証に失敗しました：" + response.error, true);
-            return;
-          }
-          gdriveAccessToken = response.access_token;
-          updateGDriveStatus();
-          message("Google Driveに正常に接続しました。");
-          listGoogleDriveBackups();
-        }
-      });
-
-      gdriveTokenClient.requestAccessToken({ prompt: "consent" });
-    }
-
-    async function exportToGoogleDrive() {
-      requireCondition(gdriveAccessToken !== null, "Google Drive", "先に「Google Drive に接続」を行ってください");
-
-      const allData = await readAllData();
-      const backupPayload = {
-        backupType: "denken-quiz-full",
-        backupVersion: 1,
-        databaseVersion: DB_VERSION,
-        exportedAt: new Date().toISOString(),
-        data: allData
-      };
-
-      validateBackupDocument(backupPayload);
-      const jsonText = JSON.stringify(backupPayload, null, 2);
-
-      const now = new Date();
-      const pad = n => String(n).padStart(2, "0");
-      const filename = "denken-backup-"
-        + now.getFullYear() + pad(now.getMonth() + 1) + pad(now.getDate()) + "-"
-        + pad(now.getHours()) + pad(now.getMinutes()) + pad(now.getSeconds()) + ".json";
-
-      const metadata = {
-        name: filename,
-        mimeType: "application/json",
-        description: "電験3種クイズ・問題管理 バックアップデータ"
-      };
-
-      const boundary = "-------denkenBoundary" + Date.now();
-      const delimiter = "\r\n--" + boundary + "\r\n";
-      const closeDelim = "\r\n--" + boundary + "--";
-
-      const multipartRequestBody =
-        delimiter +
-        "Content-Type: application/json; charset=UTF-8\r\n\r\n" +
-        JSON.stringify(metadata) +
-        delimiter +
-        "Content-Type: application/json; charset=UTF-8\r\n\r\n" +
-        jsonText +
-        closeDelim;
-
-      const res = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart", {
-        method: "POST",
-        headers: {
-          "Authorization": "Bearer " + gdriveAccessToken,
-          "Content-Type": "multipart/related; boundary=" + boundary
-        },
-        body: multipartRequestBody
-      });
-
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error("Google Driveへのアップロードに失敗しました (" + res.status + ")：" + errText);
-      }
-
-      const fileData = await res.json();
-      lastExportedFingerprint = fullFingerprint(allData);
-
-      message("Google Driveに保管しました！（ファイル名：" + filename + "、ID：" + fileData.id + "）");
-      listGoogleDriveBackups();
-    }
-
-    async function listGoogleDriveBackups() {
-      requireCondition(gdriveAccessToken !== null, "Google Drive", "先に「Google Drive に接続」を行ってください");
-
-      const container = $("gdrive-files-container");
-      container.replaceChildren();
-      container.append(element("p", "Google Drive 内のバックアップを検索中...", "muted"));
-
-      const query = "name contains 'denken-backup' and trashed=false";
-      const url = "https://www.googleapis.com/drive/v3/files?q=" + encodeURIComponent(query)
-        + "&fields=files(id,name,createdTime,size,mimeType)&orderBy=createdTime desc&pageSize=30";
-
-      const res = await fetch(url, {
-        headers: { "Authorization": "Bearer " + gdriveAccessToken }
-      });
-
-      if (!res.ok) {
-        const errText = await res.text();
-        container.replaceChildren();
-        throw new Error("Google Driveのファイル一覧取得に失敗しました：" + errText);
-      }
-
-      const result = await res.json();
-      container.replaceChildren();
-
-      const files = result.files || [];
-      if (files.length === 0) {
-        container.append(element("p", "Google Drive 内に「denken-backup」で始まるバックアップファイルが見つかりませんでした。", "muted"));
-        return;
-      }
-
-      const table = element("table");
-      const thead = element("thead");
-      thead.innerHTML = "<tr><th>ファイル名</th><th>保管日時</th><th>サイズ</th><th>操作</th></tr>";
-      table.append(thead);
-
-      const tbody = element("tbody");
-      files.forEach(f => {
-        const tr = element("tr");
-        const dateStr = f.createdTime ? new Date(f.createdTime).toLocaleString("ja-JP") : "-";
-        const sizeKb = f.size ? (Number(f.size) / 1024).toFixed(1) + " KB" : "-";
-
-        tr.append(
-          element("td", f.name),
-          element("td", dateStr),
-          element("td", sizeKb)
-        );
-
-        const loadBtn = element("button", "呼び出して検査", "primary");
-        loadBtn.type = "button";
-        loadBtn.addEventListener("click", () => {
-          perform(() => loadFromGoogleDrive(f.id, f.name));
-        });
-
-        const actionTd = element("td");
-        actionTd.append(loadBtn);
-        tr.append(actionTd);
-        tbody.append(tr);
-      });
-
-      table.append(tbody);
-      container.append(table);
-    }
-
-    async function loadFromGoogleDrive(fileId, fileName) {
-      requireCondition(gdriveAccessToken !== null, "Google Drive", "先に「Google Drive に接続」を行ってください");
-
-      const res = await fetch("https://www.googleapis.com/drive/v3/files/" + fileId + "?alt=media", {
-        headers: { "Authorization": "Bearer " + gdriveAccessToken }
-      });
-
-      if (!res.ok) {
-        throw new Error("Google Driveからのファイルダウンロードに失敗しました (" + res.status + ")");
-      }
-
-      const text = await res.text();
-      let raw;
-      try {
-        raw = JSON.parse(text);
-      } catch {
-        throw new Error("ダウンロードしたファイルが正しいJSON形式ではありません。");
-      }
-
-      const validData = validateBackupDocument(raw);
-      const current = await readAllData();
-
-      backupInspectPlan = {
-        data: validData,
-        currentBaseFingerprint: fullFingerprint(current),
-        source: "Google Drive (" + fileName + ")"
-      };
-
-      renderBackupPlan();
-      message("Google Driveから「" + fileName + "」を読み込み、検査を完了しました。内容を確認して復元を実行してください。");
-      
-      const planEl = $("backup-plan");
-      if (planEl) planEl.scrollIntoView({ behavior: "smooth" });
-    }
 
     async function loadFromGDriveUrl() {
       const urlInput = $("gdrive-url-input");
@@ -3292,27 +3308,43 @@ Markdownのコード枠、前置き、あとがき、検査報告は付けない
 
       requireCondition(/^[a-zA-Z0-9_-]+$/.test(fileId), "ファイルID", "有効なファイルIDを抽出できませんでした");
 
-      if (gdriveAccessToken) {
-        await loadFromGoogleDrive(fileId, fileId);
-        return;
+      message("Google Drive からデータを取得中...");
+
+      // 公開ダウンロード用エンドポイント
+      const downloadUrls = [
+        "https://drive.google.com/uc?export=download&id=" + fileId,
+        "https://drive.usercontent.google.com/download?id=" + fileId + "&export=download"
+      ];
+
+      let text = null;
+
+      for (const dlUrl of downloadUrls) {
+        try {
+          const res = await fetch(dlUrl);
+          if (res.ok) {
+            const candidate = await res.text();
+            if (candidate.trim().startsWith("{") || candidate.trim().startsWith("[")) {
+              text = candidate;
+              break;
+            }
+          }
+        } catch {}
       }
 
-      // 公開ダウンロードURLからの取得を試みる
-      const downloadUrl = "https://drive.google.com/uc?export=download&id=" + fileId;
-      let text = "";
-      try {
-        const res = await fetch(downloadUrl);
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        text = await res.text();
-      } catch {
-        throw new Error("公開リンクから直接ダウンロードできませんでした。上の「Google Drive に接続」ボタンからログインして読み込んでください。");
+      if (!text) {
+        const manualDlUrl = "https://drive.google.com/uc?export=download&id=" + fileId;
+        throw new Error(
+          "Google Driveから直接データを取得できませんでした。\n" +
+          "・ファイルが「リンクを知っている全員が閲覧可能」になっているか確認してください。\n" +
+          "・ブラウザーの通信制限（CORS）で直接フェッチできない場合は、以下のリンクからファイルをダウンロードし、すぐ下の「全置換復元（ファイル読み込み）」で選択してください：\n" + manualDlUrl
+        );
       }
 
       let raw;
       try {
         raw = JSON.parse(text);
       } catch {
-        throw new Error("取得したデータが有効なJSONではありませんでした。ファイルが全体公開されているか確認してください。");
+        throw new Error("取得したデータが有効なJSON形式ではありませんでした。");
       }
 
       const validData = validateBackupDocument(raw);
@@ -3321,11 +3353,13 @@ Markdownのコード枠、前置き、あとがき、検査報告は付けない
       backupInspectPlan = {
         data: validData,
         currentBaseFingerprint: fullFingerprint(current),
-        source: "共有リンク (" + fileId + ")"
+        source: "Google Drive 共有リンク (ID: " + fileId + ")"
       };
 
       renderBackupPlan();
-      message("共有リンクからデータを取得し、検査を完了しました。内容を確認して復元を実行してください。");
+      message("Google Drive共有リンクからデータを正常に取得し、検査を完了しました。内容を確認して復元を実行してください。");
+      const planEl = $("backup-plan");
+      if (planEl) planEl.scrollIntoView({ behavior: "smooth" });
     }
 
     // ==========================================
@@ -4052,7 +4086,7 @@ Markdownのコード枠、前置き、あとがき、検査報告は付けない
     function createQuestionCard(question, fieldMap) {
       const article = element("article");
 
-      const headerDiv = element("div", undefined, "controls");
+      const headerDiv = element("div", undefined, "controls study-header-controls");
       headerDiv.style.justifyContent = "space-between";
       headerDiv.append(
         element("p", question.id + "／版 " + question.revision, "question-title")
@@ -4332,17 +4366,7 @@ Markdownのコード枠、前置き、あとがき、検査報告は付けない
         perform(inspectBackupFile);
       });
 
-      // Google Drive 関連イベント
-      $("gdrive-save-config-btn").addEventListener("click", saveGDriveSettings);
-      $("gdrive-auth-btn").addEventListener("click", () => {
-        perform(connectGoogleDrive);
-      });
-      $("gdrive-save-btn").addEventListener("click", () => {
-        perform(exportToGoogleDrive);
-      });
-      $("gdrive-list-btn").addEventListener("click", () => {
-        perform(listGoogleDriveBackups);
-      });
+      // Google Drive 共有リンク関連イベント
       $("gdrive-url-load-btn").addEventListener("click", () => {
         perform(loadFromGDriveUrl);
       });
@@ -4434,7 +4458,6 @@ Markdownのコード枠、前置き、あとがき、検査報告は付けない
         db = await openDatabase();
 
         initTheme();
-        initGDriveSettings();
         bindEvents();
         setupCatalogNotifications();
 
