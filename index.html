@@ -1429,42 +1429,157 @@
 
     const FIELD_TEMPLATES = {
       theory: [
-        { id: "theory-electrostatics", name: "静電気", scope: "クーロンの法則、電界と電位、ガウスの定理、静電容量、コンデンサ接続、静電エネルギー" },
-        { id: "theory-magnetism", name: "磁気", scope: "磁界と磁束密度、ビオ・サバールの法則、アンペールの法則、電磁誘導、インダクタンス、磁気回路" },
-        { id: "theory-dc-circuits", name: "直流回路", scope: "オームの法則、キルヒホッフの法則、合成抵抗、分圧・分流、ブリッジ回路、テブナンの定理、重ね合わせの理、電力・電力量" },
-        { id: "theory-ac-circuits", name: "交流回路", scope: "正弦波交流、インピーダンス、複素数表示、RLC直並列回路、共振回路、有効・無効電力・力率、三相交流回路（対称三相交流、Y-Δ結線）" },
-        { id: "theory-transients", name: "過渡現象", scope: "RL直列回路・RC直列回路の過渡応答、時定数、スイッチ開閉直後・定常状態の電圧・電流計算" },
-        { id: "theory-electronics", name: "電子理論・電子回路", scope: "真空中の電子運動、半導体理論（pn接合ダイオード、バイポーラトランジスタ、FET）、オペアンプ（理想演算増幅器回路）" },
-        { id: "theory-measurements", name: "電気計測", scope: "指示電気計器の動作原理（可動コイル形、可動鉄片形等）、倍率器・分流器、計器用変成器、電力測定（二電力計法）、測定誤差" }
+        {
+          id: "theory-electrostatics",
+          name: "静電気",
+          scope: "クーロンの法則、電界と電位、電気力線とガウスの法則、コンデンサの静電容量、直並列接続、静電エネルギー、誘電体と絶縁破壊"
+        },
+        {
+          id: "theory-magnetism",
+          name: "磁気・電磁気",
+          scope: "磁気クーロンの法則、磁界の強さと磁束密度、アンペールの周回積分の法則、電磁力（フレミングの左手の法則）、電磁誘導（ファラデーの法則・レンツの法則）、自己インダクタンス・相互インダクタンス、磁気回路、磁性体"
+        },
+        {
+          id: "theory-dc-circuits",
+          name: "直流回路",
+          scope: "オームの法則、直並列接続・ブリッジ回路、キルヒホッフの法則、重ね合わせの理、テブナン・ノートンの定理、最大電力供給の定理、電力・電力量"
+        },
+        {
+          id: "theory-ac-single",
+          name: "単相交流回路",
+          scope: "正弦波交流（実効値・平均値・位相）、フェーザ表示・複素数計算、R-L-C 直並列回路、共振回路（直列共振・並列共振）、交流電力（有効・無効・皮相電力、力率）"
+        },
+        {
+          id: "theory-ac-three",
+          name: "三相交流回路",
+          scope: "対称三相交流、Y（星形）結線とΔ（三角）結線の電圧・電流関係、Δ-Y 変換、平衡三相負荷の電力計算、不平衡三相負荷・二電力計法"
+        },
+        {
+          id: "theory-electronics",
+          name: "電子理論・電子回路",
+          scope: "半導体の性質（真性・n形・p形）、ダイオード・整流回路、バイポーラトランジスタ・FETの動作と増幅回路（バイアス・等価回路）、演算増幅器（オペアンプ）、発振回路・変調回路"
+        },
+        {
+          id: "theory-measurements",
+          name: "電気・電子計測",
+          scope: "指示電気計器の原理・誤差と補正、分流器と倍率器（測定範囲の拡大）、直流・交流ブリッジによる測定、電力・電力量の測定、オシロスコープ、SI組立単位"
+        }
       ],
       power: [
-        { id: "power-hydro", name: "水力発電", scope: "ベルヌーイの定理、理論水力・水車出力・発電機出力、水車の種類・特性、比速度、キャビテーション、調速機、揚水発電所" },
-        { id: "power-thermal", name: "火力発電", scope: "ランキンサイクル、汽力発電用ボイラ・蒸気タービン、熱効率・燃料消費量計算、コンバインドサイクル発電、環境保全対策" },
-        { id: "power-nuclear-renewables", name: "原子力・新エネルギー発電", scope: "核分裂反応、軽水炉（BWR・PWR）、太陽光発電・風力発電の特性、燃料電池、蓄電池連系システム" },
-        { id: "power-substation", name: "変電所", scope: "主変圧器結線・保護、ガス絶縁開閉装置(GIS)、遮断器・断路器、調相設備（電力用コンデンサ、分路リアクトル）、中性点接地方式" },
-        { id: "power-transmission", name: "送電線路", scope: "架空送電線路のたるみ・風圧荷重、送電特性・電圧降下計算、短絡容量・地絡故障計算、安定度向上対策、フェランチ効果とコロナ放電" },
-        { id: "power-underground", name: "地中送電", scope: "電力ケーブル（CVケーブル等）、ケーブルの充電容量・誘電損・シース損、地中電線路の敷設方式、事故点測定法（マーレーループ法）" },
-        { id: "power-distribution", name: "配電線路", scope: "配電系統構成（単相3線式・三相3線式）、配電線路の電圧降下・電力損失計算、柱上変圧器、バランサ、力率改善計算" },
-        { id: "power-materials", name: "電気材料", scope: "導電材料・抵抗材料、各種絶縁材料・絶縁破壊特性、磁性材料のヒステリシス損・渦電流損" }
+        {
+          id: "power-hydro",
+          name: "水力発電",
+          scope: "発電所の分類（水路式・ダム式・ダム水路式／流込み式・調整池式・貯水池式・揚水式）、ベルヌーイの定理、理論水力・水車出力・発電機出力の計算、水車の種類と特性、比速度、キャビテーション、水撃作用・サージタンク、調速機"
+        },
+        {
+          id: "power-thermal",
+          name: "火力発電",
+          scope: "ランキンサイクル、再熱・再生サイクル、汽力発電用ボイラ・蒸気タービン・復水器、熱効率・燃料消費量の計算、コンバインドサイクル発電、環境保全対策（脱硫・脱硝・集じん）"
+        },
+        {
+          id: "power-nuclear-renewables",
+          name: "原子力・新エネルギー発電",
+          scope: "原子力発電の原理・炉型（BWR・PWR）、核燃料サイクル、太陽光発電、風力発電、地熱発電、バイオマス発電、燃料電池発電"
+        },
+        {
+          id: "power-substation",
+          name: "変電",
+          scope: "変電所の役割と設備構成、主変圧器・計器用変成器（CT・VT）、遮断器（ガス遮断器など）・断路器・避雷器、ガス絶縁開閉装置（GIS）、保護継電器"
+        },
+        {
+          id: "power-transmission",
+          name: "送電",
+          scope: "架空送電線路の設計（電線の種類・たるみ・実長・振動対策・がいし）、送電特性（電圧降下・線路損失・フェランチ効果・送電電力の式）、中性点接地方式、異常電圧と雷害対策、誘導障害、コロナ放電、地中送電線路（CVケーブル、布設方式、シース損・誘電体損）"
+        },
+        {
+          id: "power-distribution",
+          name: "配電",
+          scope: "配電方式（単相2線式・単相3線式・三相3線式・三相4線式、スポットネットワーク方式）、配電線路の電圧降下・電力損失・力率改善、電圧維持対策、配電用機材・保護協調"
+        },
+        {
+          id: "power-materials",
+          name: "電気材料",
+          scope: "導電材料（硬銅・軟銅・鋼心アルミより線）、絶縁材料（SF6ガス・絶縁油・固体絶縁物）"
+        }
       ],
       machine: [
-        { id: "machine-dc", name: "直流機", scope: "直流発電機・電動機の構造と動作原理、誘導起電力・トルク計算、電機子反作用、速度制御・始動法、特性曲線" },
-        { id: "machine-induction", name: "誘導機", scope: "三相誘導電動機の回転磁界と動作原理、すべりの計算、等価回路、トルク特性・比例推移、始動法・速度制御法" },
-        { id: "machine-synchronous", name: "同期機", scope: "同期発電機・電動機の構造・誘導起電力、電機子反作用、短絡比と同期インピーダンス、同期電動機のV曲線（位相特性）" },
-        { id: "machine-transformer", name: "変圧器", scope: "変圧器の構造と動作原理、等価回路、電圧変動率の計算、損失（鉄損・銅損）と効率計算・全日効率、並行運転条件、三相結線" },
-        { id: "machine-powerelec", name: "パワーエレクトロニクス", scope: "パワー半導体素子（ダイオード、サイリスタ、IGBT、MOSFET）、整流回路・転流現象、DC-DCチョッパ、インバータ（PWM制御）" },
-        { id: "machine-motor-applications", name: "電動機応用・自動制御", scope: "電動機の所要出力計算、負荷特性と所要動力、古典制御理論（ブロック線図、伝達関数、インパルス/ステップ応答、ボード線図）" },
-        { id: "machine-information", name: "情報伝達・処理", scope: "基数変換、論理演算と論理回路、ブール代数の公式、カルノー図による論理式簡単化、コンピュータ基本構成" },
-        { id: "machine-lighting", name: "照明", scope: "光度・光束・照度・輝度の定義と単位、点光源・面光源の照度計算（水平面・垂直面照度）、各種光源の特徴と発光効率" },
-        { id: "machine-heating", name: "電熱", scope: "電熱計算（熱量、比熱、所要電力、熱効率）、加熱方式（抵抗加熱、誘導加熱、誘電加熱、アーク加熱）、ヒートポンプ" },
-        { id: "machine-electrochem", name: "電気化学", scope: "ファラデーの電気分解の法則、電池の起電力・電極反応、二次電池（鉛蓄電池、リチウムイオン二次電池）、電気めっき" }
+        {
+          id: "machine-dc",
+          name: "直流機",
+          scope: "構造と原理（電機子・界磁・整流子）、電機子反作用と整流対策、直流発電機・直流電動機の種類（他励・分巻・直巻・複巻）と特性・速度制御"
+        },
+        {
+          id: "machine-transformer",
+          name: "変圧器",
+          scope: "構造と原理、等価回路と電圧変動率、損失（鉄損・銅損）と効率・全日効率、結線方式（Y-Y、Δ-Δ、Y-Δ、V-V結線）、並行運転の条件、単巻変圧器"
+        },
+        {
+          id: "machine-induction",
+          name: "誘導機",
+          scope: "三相誘導電動機の構造（かご形・巻線形）と回転磁界の原理、滑り・滑り周波数、等価回路と出力・トルク計算（比例推移）、始動法・速度制御・制動法、単相誘導電動機"
+        },
+        {
+          id: "machine-synchronous",
+          name: "同期機",
+          scope: "構造（水車発電機とタービン発電機の比較）、電機子反作用、同期インピーダンスと短絡比、位相特性曲線（V曲線）と同期調相機、並行運転の条件と横流、負荷角と出力"
+        },
+        {
+          id: "machine-powerelec",
+          name: "パワーエレクトロニクス",
+          scope: "パワー半導体デバイス（ダイオード・サイリスタ・IGBT・MOSFET）、整流回路（単相・三相）、チョッパ回路、インバータ回路の動作と波形解析"
+        },
+        {
+          id: "machine-control",
+          name: "自動制御",
+          scope: "シーケンス制御（論理回路・真理値表・タイムチャート・リレーシーケンス）、フィードバック制御（ブロック線図の簡略化、伝達関数、周波数応答・安定判別）"
+        },
+        {
+          id: "machine-applications",
+          name: "電動力応用・照明・電熱・電気化学・情報処理",
+          scope: "電動力応用（所要動力計算・慣性モーメント）、特殊モータ（ステッピングモータ・SRMなど）、照明（光度・光束・照度・輝度、各種光源）、電熱（抵抗加熱・誘導加熱・ヒートポンプ）、電気化学（ファラデーの法則・電池）、情報処理（2進数・16進数・論理演算）"
+        },
+        {
+          id: "machine-motor-apps",
+          name: "電動力応用（個別）",
+          scope: "所要動力計算・慣性モーメント、特殊モータ（ステッピングモータ・SRMなど）"
+        },
+        {
+          id: "machine-lighting-heating",
+          name: "照明・電熱（個別）",
+          scope: "照明（光度・光束・照度・輝度、各種光源）、電熱（抵抗加熱・誘導加熱・ヒートポンプ）"
+        },
+        {
+          id: "machine-electrochem-info",
+          name: "電気化学・情報処理（個別）",
+          scope: "電気化学（ファラデーの法則・電池）、情報処理（2進数・16進数・論理演算）"
+        }
       ],
       regulation: [
-        { id: "regulation-business-law", name: "電気事業法及び関係法令", scope: "電気工作物の定義と分類（一般用・自家用・事業用）、主任技術者の選任義務・保安規程、自主保安体制、使用前自主検査、報告義務" },
-        { id: "regulation-standards-general", name: "技術基準（総則・発変電施設）", scope: "用語の定義、電路の絶縁性能・絶縁耐力試験、接地工事の区分と接地抵抗値、機械器具の危険防止措置" },
-        { id: "regulation-standards-lines", name: "技術基準（電線路・施設基準）", scope: "架空電線路の支持物・保安工事、電線の離隔距離（建造物・道路等）、地中電線路の施設、過電流・地絡遮断器の施設基準" },
-        { id: "regulation-standards-lowvoltage", name: "技術基準（低圧屋内配線・需要場所）", scope: "低圧屋内配線工事（金属管、可とう電線管、ケーブル工事等）、過電流遮断器・漏電遮断器の施設、特殊場所（粉じん・危険物）の工事" },
-        { id: "regulation-management", name: "電気施設管理", scope: "需要率・不等率・負荷率の計算、力率改善による設備容量余裕・損失軽減計算、変圧器の適正容量決定、周波数変動・事故対策" }
+        {
+          id: "regulation-business-law",
+          name: "電気事業法・関連法規",
+          scope: "電気工作物の分類（一般用・事業用・自家用・小規模事業用電気工作物）、電気主任技術者の選任・職務、保安規程、工事計画の届出、使用前自己確認、調査の義務、電気関係報告規則（事故報告の基準・期限）、電気工事士法・電気工事業法（資格ごとの作業範囲、登録・通知電気工事業者、帳簿保存）、電気用品安全法（特定電気用品のPSEマーク表示など）"
+        },
+        {
+          id: "regulation-standards-general",
+          name: "電気設備技術基準・同解釈（総則・発電所等）",
+          scope: "感電・火災等の防止、電路の絶縁原則、接地工事の種類（A種・B種・C種・D種）と接地抵抗値、過電流遮断器・地絡遮断器の施設、電磁誘導作用による人の健康影響防止、特殊場所の施設制限"
+        },
+        {
+          id: "regulation-standards-lines",
+          name: "電気設備技術基準・同解釈（電線路）",
+          scope: "架空電線路の支持物の強度・支線の設計、電線の安全率とたるみ・離隔距離、低圧・高圧架空引込線、地中電線路の施設、誘導障害の防止"
+        },
+        {
+          id: "regulation-standards-installation",
+          name: "電気設備技術基準・同解釈（電気使用場所・分散型電源）",
+          scope: "低圧・高圧電路の絶縁性能（絶縁抵抗値・絶縁耐力試験電圧）、低圧幹線の許容電流と過電流遮断器、分散型電源の系統連系（単独運転防止・逆潮流・保護装置・連絡用電話設備）"
+        },
+        {
+          id: "regulation-management",
+          name: "電気施設管理（計算問題中心）",
+          scope: "需要率・不等率・負荷率の計算、日負荷曲線・年間流量曲線と電力量計算、高圧受電設備の保護協調（OCR・PAS・CBの動作時間とシーケンス）、進相コンデンサによる力率改善計算（直列リアクトル付コンデンサの容量・端子電圧）、配電線の電圧降下・電力損失、支線張力・支線強度計算"
+        }
       ]
     };
 
@@ -1640,6 +1755,7 @@
       } else if (pageId === "analysis") {
         updateAnalysis();
       } else if (pageId === "prompt") {
+        refillPromptTemplates();
         refillPromptFields();
       } else if (pageId === "fields") {
         refillDeleteFields();
@@ -2968,10 +3084,10 @@
         const stillExists = [...select.options].some(o => o.value === previous);
         select.value = stillExists ? previous : templates[0].id;
       }
-      onPromptTemplateChange();
+      onPromptTemplateChange(true);
     }
 
-    function onPromptTemplateChange() {
+    function onPromptTemplateChange(force = true) {
       const subjectId = $("prompt-subject").value;
       const select = $("prompt-field-template");
       const templateId = select.value;
@@ -2980,12 +3096,12 @@
 
       if (tmpl) {
         const scopeInput = $("prompt-scope");
-        if (!scopeInput.value || scopeInput.dataset.auto === "true") {
+        if (force || !scopeInput.value || scopeInput.dataset.auto === "true") {
           scopeInput.value = tmpl.scope;
           scopeInput.dataset.auto = "true";
         }
       }
-      updatePromptPrefixCandidate();
+      updatePromptPrefixCandidate(force);
     }
 
     function refillPromptFields() {
@@ -3024,7 +3140,7 @@
         templateContainer.style.display = "inline-flex";
         selectContainer.style.display = "none";
         newContainer.style.display = "none";
-        onPromptTemplateChange();
+        onPromptTemplateChange(true);
       } else if (mode === "existing") {
         templateContainer.style.display = "none";
         selectContainer.style.display = "inline-flex";
@@ -3037,7 +3153,7 @@
       updatePromptPrefixCandidate();
     }
 
-    function updatePromptPrefixCandidate() {
+    function updatePromptPrefixCandidate(force = false) {
       const mode = $("prompt-field-mode").value;
       let fieldId = "";
 
@@ -3050,7 +3166,7 @@
       }
 
       const prefixInput = $("prompt-prefix");
-      if (!prefixInput.value || prefixInput.dataset.auto === "true") {
+      if (force || !prefixInput.value || prefixInput.dataset.auto === "true") {
         prefixInput.value = fieldId + "-set001";
         prefixInput.dataset.auto = "true";
       }
@@ -4333,9 +4449,9 @@ Markdownのコード枠、前置き、あとがき、検査報告は付けない
         refillPromptFields();
       });
       $("prompt-field-mode").addEventListener("change", updatePromptFieldVisibility);
-      $("prompt-field-template").addEventListener("change", onPromptTemplateChange);
-      $("prompt-field-select").addEventListener("change", updatePromptPrefixCandidate);
-      $("prompt-new-field-id").addEventListener("input", updatePromptPrefixCandidate);
+      $("prompt-field-template").addEventListener("change", () => onPromptTemplateChange(true));
+      $("prompt-field-select").addEventListener("change", () => updatePromptPrefixCandidate(true));
+      $("prompt-new-field-id").addEventListener("input", () => updatePromptPrefixCandidate(true));
       $("prompt-scope").addEventListener("input", () => {
         $("prompt-scope").dataset.auto = "false";
       });
