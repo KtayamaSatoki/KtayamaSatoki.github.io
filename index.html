@@ -3145,12 +3145,13 @@
         templateContainer.style.display = "none";
         selectContainer.style.display = "inline-flex";
         newContainer.style.display = "none";
+        updatePromptPrefixCandidate(true);
       } else {
         templateContainer.style.display = "none";
         selectContainer.style.display = "none";
         newContainer.style.display = "flex";
+        updatePromptPrefixCandidate(true);
       }
-      updatePromptPrefixCandidate();
     }
 
     function updatePromptPrefixCandidate(force = false) {
@@ -3170,6 +3171,57 @@
         prefixInput.value = fieldId + "-set001";
         prefixInput.dataset.auto = "true";
       }
+      updatePromptStartNumCandidate(force);
+    }
+
+    function calculateMaxTrailingNumber(fieldId, prefix) {
+      const allQs = snapshot.questions || [];
+      const targetMap = new Map();
+
+      if (prefix) {
+        allQs.filter(q => q.id.startsWith(prefix + "-") || q.id.startsWith(prefix))
+             .forEach(q => targetMap.set(q.id, q));
+      }
+      if (targetMap.size === 0 && fieldId) {
+        allQs.filter(q => q.fieldId === fieldId)
+             .forEach(q => targetMap.set(q.id, q));
+      }
+
+      let maxNum = 0;
+      targetMap.forEach(q => {
+        const match = String(q.id).trim().match(/(\d+)(?!.*\d)/);
+        if (match) {
+          const num = parseInt(match[1], 10);
+          if (!isNaN(num) && num > maxNum) {
+            maxNum = num;
+          }
+        }
+      });
+
+      return maxNum;
+    }
+
+    function updatePromptStartNumCandidate(force = false) {
+      const startNumInput = $("prompt-start-num");
+      if (!force && startNumInput.dataset.auto === "false") {
+        return;
+      }
+
+      const mode = $("prompt-field-mode").value;
+      let fieldId = "";
+      if (mode === "template") {
+        fieldId = $("prompt-field-template").value;
+      } else if (mode === "existing") {
+        fieldId = $("prompt-field-select").value;
+      } else {
+        fieldId = $("prompt-new-field-id").value.trim();
+      }
+
+      const prefix = $("prompt-prefix").value.trim();
+      const maxNum = calculateMaxTrailingNumber(fieldId, prefix);
+      startNumInput.value = maxNum + 1;
+      startNumInput.dataset.auto = "true";
+      startNumInput.title = maxNum > 0 ? ("既存問題の末尾最大値 (" + maxNum + ") + 1") : "既存問題なし（1から開始）";
     }
 
     function generatePrompt() {
@@ -3207,7 +3259,11 @@
       const composition = $("prompt-composition").value;
       const format = $("prompt-format").value;
       const prefix = $("prompt-prefix").value.trim() || (fieldId + "-set001");
-      const startNum = $("prompt-start-num").value || "1";
+      let startNum = $("prompt-start-num").value.trim();
+      if (!startNum) {
+        startNum = String(calculateMaxTrailingNumber(fieldId, prefix) + 1);
+        $("prompt-start-num").value = startNum;
+      }
       const legalDate = $("prompt-legal-date").value.trim() || "なし";
       const references = $("prompt-references").value.trim() || "指定なし";
 
@@ -3331,7 +3387,7 @@ fieldsの各オブジェクトには、次の3項目だけを含めてくださ�
 
 questionsの各オブジェクトには、次の全項目を含めてください。
 
-・id：接頭辞と4桁の連番をハイフンで結んだ文字列
+・id：接頭辞と4桁の連番をハイフンで結んだ文字列（指定した「開始番号 ${startNum}」から昇順に4桁ゼロ埋めで連番付与。例：${prefix}-${String(startNum).padStart(4, "0")}、${prefix}-${String(Number(startNum) + 1).padStart(4, "0")} ...）
 ・revision：整数の1
 ・subjectId：指定した科目ID
 ・fieldId：所属分野のID
@@ -4457,6 +4513,10 @@ Markdownのコード枠、前置き、あとがき、検査報告は付けない
       });
       $("prompt-prefix").addEventListener("input", () => {
         $("prompt-prefix").dataset.auto = "false";
+        updatePromptStartNumCandidate();
+      });
+      $("prompt-start-num").addEventListener("input", () => {
+        $("prompt-start-num").dataset.auto = "false";
       });
       $("prompt-generate-btn").addEventListener("click", () => {
         perform(generatePrompt);
